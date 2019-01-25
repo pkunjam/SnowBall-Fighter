@@ -1,39 +1,53 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Remoting.Lifetime;
 using UnityEngine;
 
 public class Move : MonoBehaviour
 {
-    float moveSpeed = 1.5f;
+    float moveSpeed = 3f;
     public GameObject prefabsnowBall;
-    private float force = 4;
-    private bool allowInstance = true;
-    private GameObject snowBall;
+    float force = 20;
+    GameObject snowBall;
+    Vector3 touchPosition;
+    Vector3 tempSize;
 
     void Update()
     {
+
         if (Input.touchCount > 0)
         {
             // The screen has been touched so store the touch
             Touch touch = Input.GetTouch(0);
 
-            if (touch.phase == TouchPhase.Began)
+            switch (touch.phase)
             {
-                    snowBall = Instantiate(prefabsnowBall, transform.position + (transform.forward * 0.5f), transform.rotation);
+                case TouchPhase.Began:
+
+                    snowBall = Instantiate(prefabsnowBall, transform.position + (transform.forward * 1.5f), transform.rotation);
                     snowBall.transform.parent = gameObject.transform;
-            }
+                    break;
 
-            if (touch.phase == TouchPhase.Stationary || touch.phase == TouchPhase.Moved)
-            {
-                // If the finger is on the screen, move the object smoothly to the touch position
-                Vector3 touchPosition = Camera.main.ScreenToWorldPoint(new Vector3(touch.position.x, touch.position.y, 10));
-                transform.LookAt(new Vector3(touchPosition.x, transform.position.y, touchPosition.z));
-                transform.position = Vector3.Lerp(transform.position, touchPosition, moveSpeed * Time.deltaTime);
-            }
+                case TouchPhase.Moved:
+                    touchPosition = Camera.main.ScreenToWorldPoint(new Vector3(touch.position.x, touch.position.y, 10));
+                    transform.LookAt(new Vector3(touchPosition.x, transform.position.y, touchPosition.z));
+                    transform.position = Vector3.Lerp(transform.position, touchPosition, moveSpeed * Time.deltaTime);
+                    tempSize = snowBall.transform.localScale;
+                    tempSize.x += Time.deltaTime * 2f;
+                    tempSize.y += Time.deltaTime * 2f;
+                    tempSize.z += Time.deltaTime * 2f;
+                    snowBall.transform.localScale = tempSize;
+                    break;
 
-            if (touch.phase == TouchPhase.Ended)
-            {
-                snowBall.GetComponent<Rigidbody>().AddForce(transform.forward * force, ForceMode.Impulse);
+                case TouchPhase.Stationary:
+                    touchPosition = Camera.main.ScreenToWorldPoint(new Vector3(touch.position.x, touch.position.y, 10));
+                    transform.LookAt(new Vector3(touchPosition.x, transform.position.y, touchPosition.z));
+                    transform.position = Vector3.Lerp(transform.position, touchPosition, moveSpeed * Time.deltaTime);
+                    break;
+
+                case TouchPhase.Ended:
+                    snowBall.GetComponent<Rigidbody>().AddForce(transform.forward * force, ForceMode.Impulse);
+                    break;
             }
         }
     }
