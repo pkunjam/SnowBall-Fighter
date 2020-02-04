@@ -3,7 +3,7 @@
 This is my first 3D game developed from scratch in unity game engine for android platform. </br>
 Generate snowball from the ground and eliminate the enemies.
 
-Live Demonstration - [Click Here](https://youtu.be/knuq3-y86Yw)
+Live Demonstration - [Click Here](https://youtu.be/rjL30C53zwY)
 
 ## Requirements
 
@@ -11,14 +11,15 @@ This game is compatible with Android devices.
 
 ## Screenshots
 
-![IMG]()
-![im2]()
+![IMG](https://github.com/pkunjam/SnowBall-Fighter/blob/master/Assets/1.png)
+
+![img](https://github.com/pkunjam/SnowBall-Fighter/blob/master/Assets/2.png)
 
 
 ## Deployment
 
 * Simply clone the repository
-* Open "apk" folder
+* Open "Build" folder
 * Copy snowball.apk to your android device
 * Install the game
 * Enjoy!
